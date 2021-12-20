@@ -28,11 +28,11 @@ kubectx docker-desktop
 
 
 
-# AWS -
+# AWS - In Progress
 ### EKS
 
-# Azure
+# Azure - In Progress
 ### AKS
 
-# GCP
+# GCP - - In Progress
 ### GKE
