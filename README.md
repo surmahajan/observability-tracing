@@ -34,7 +34,7 @@ Private Cluster - Managing application and data workloads.
 
 * Install Elasticsearch to store Jaeger traces - Refer [Documentation](./storage/README.md)
 * Deploy Jaeger - Refer [Documentation](./tracing/README.md)
-* Deploy Bookinfo application - Refer [Documentation](./demo/README.md)
+* Deploy Bookinfo application in order to test tracing - Refer [Documentation](./demo/README.md)
 * Install Istio and enable sidecar - Refer [Documentation](./servicemesh/README.md)
 * Deploy Grafana in order to visualise the traces - Refer [Documentation](./dashboard/grafana/README.md)
 
