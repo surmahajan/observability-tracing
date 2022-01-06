@@ -35,9 +35,8 @@ Private Cluster - Managing application and data workloads.
 * Install Elasticsearch to store Jaeger traces - Refer [Documentation](./storage/README.md)
 * Deploy Jaeger - Refer [Documentation](./tracing/README.md)
 * Install Istio and enable sidecar - Refer [Documentation](./servicemesh/README.md)
-* Deploy Grafana in order to visualise the traces - Refer [Documentation](./dashboard/README.md)
-* Deploy Kong - Refer [Documentation](./kong-api-gateway/README.md)
-
+* Deploy Bookinfo application in order to test tracing - Refer [Documentation](./demo/README.md)
+* Deploy Grafana in order to visualise the traces - Refer [Documentation](./dashboard/grafana/README.md)
 
 ### Will it cost me anything?
 No - We have used Docker Desktop which includes a standalone Kubernetes server and client. If you are using any other cloud provider please refer the cloud provider's pricing documentation. As a good practice make sure you cleanup the resources at the end.
