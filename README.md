@@ -35,8 +35,8 @@ Private Cluster - Managing application and data workloads.
 * Install Elasticsearch to store Jaeger traces - Refer [Documentation](./storage/README.md)
 * Deploy Jaeger - Refer [Documentation](./tracing/README.md)
 * Install Istio and enable sidecar - Refer [Documentation](./servicemesh/README.md)
-* Deploy Bookinfo application in order to test tracing - Refer [Documentation](./demo/README.md)
 * Deploy Grafana in order to visualise the traces - Refer [Documentation](./dashboard/grafana/README.md)
+* Deploy Bookinfo application in order to test tracing - Refer [Documentation](./demo/README.md)
 
 ### Will it cost me anything?
 No - We have used Docker Desktop which includes a standalone Kubernetes server and client. If you are using any other cloud provider please refer the cloud provider's pricing documentation. As a good practice make sure you cleanup the resources at the end.
@@ -44,6 +44,15 @@ No - We have used Docker Desktop which includes a standalone Kubernetes server a
 
 ### How do I clean up?
 
+
+#### Bookinfo Clean-up
+```
+kubectl delete -f ./demo/bookinfo.yaml
+```
+#### Grafana Clean-up
+```
+kubectl delete -f ./dashboard/grafana.yaml
+```
 #### Jaeger Clean-up
 ```
 kubectl delete -f jaeger.yaml
@@ -54,7 +63,6 @@ kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operato
 kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing.io_jaegers_crd.yaml
 kubectl delete secret jaeger-secret
 ```
-
 #### Elasticsearch Clean-up
 ```
 kubectl delete -f elasticsearch.yaml
