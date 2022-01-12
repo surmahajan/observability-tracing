@@ -55,12 +55,13 @@ kubectl delete -f ./dashboard/grafana.yaml
 ```
 #### Jaeger Clean-up
 ```
-kubectl delete -f jaeger.yaml
-kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
-kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
-kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
-kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
-kubectl delete -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing.io_jaegers_crd.yaml
+kubectl delete -f ./tracing/jaeger.yaml
+kubectl delete -f ./tracing/jaeger-operator.yaml
+kubectl delete -f ./tracing/jaeger-role_binding.yaml
+kubectl delete -f ./tracing/jaeger-role.yaml
+kubectl delete -f ./tracing/jaeger-service_account.yaml
+kubectl delete -f ./tracing/jaeger-crd.yaml
+```
 kubectl delete secret jaeger-secret
 ```
 #### Elasticsearch Clean-up

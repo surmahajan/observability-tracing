@@ -4,13 +4,9 @@
 
 ```
 kubectl apply -f ./tracing/jaeger-crd.yaml
-
 kubectl apply -f ./tracing/jaeger-service_account.yaml
-
 kubectl apply -f ./tracing/jaeger-role.yaml
-
 kubectl apply -f ./tracing/jaeger-role_binding.yaml
-
 kubectl apply -f ./tracing/jaeger-operator.yaml
 ```
 
@@ -18,7 +14,7 @@ kubectl apply -f ./tracing/jaeger-operator.yaml
 
 * Apply below command to deploy the relevant Jaeger resources
     ```
-    kubectl apply -f ./observability-tracing/tracing/jaeger.yaml
+    kubectl apply -f ./tracing/jaeger.yaml
     ```
 
 ### 3. Navigate to the UI
