@@ -3,15 +3,15 @@
 ### 1. Install CRDs and RBACs
 
 ```
-kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing.io_jaegers_crd.yaml
+kubectl apply -f ./tracing/jaeger-crd.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
+kubectl apply -f ./tracing/jaeger-service_account.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
+kubectl apply -f ./tracing/jaeger-role.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
+kubectl apply -f ./tracing/jaeger-role_binding.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
+kubectl apply -f ./tracing/jaeger-operator.yaml
 ```
 
 ### 2. Create production ready Jaeger instance
