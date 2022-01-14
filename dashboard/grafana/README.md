@@ -36,19 +36,19 @@ Execute the following kubernetes command to deploy Grafana:
 kubectl apply -f grafana.yaml
 ```
 
-You can now port-forward Grafana, and using the username and password as both 'admin' log-in - you should see the following UI:
+Port-forward Grafana and access the UI with the following credentials: username and password as both 'admin'
 
 ![Image](../../images/grafana-ui-1.png)
 
-Two data sources are configured to view traces from: for both of the previously set-up Elasticsearch and Jaeger data sources. If you go to Configuration -> Data Sources, you should see them as:
+Two data sources are configured to view traces from: Elasticsearch and Jaeger. Navigate to Configuration -> Data Sources, you should see them as:
 
 ![Image](../../images/grafana-ui-2.png)
 
-You can then check the connection status by selecting a data source and clicking 'Save and Test' and you should see a successful connection message:
+Check the connection status by selecting a data source and clicking 'Save and Test' and you should see a successful connection message:
 
 ![Image](../../images/grafana-ui-3.png)
 
 
-If you have already deployed your application on kubernetes, you can now create a dashboard to view your traces by creating a new dashboard and selecting one of the data sources as a source as shown below:
+If you have deployed your application on kubernetes, create a dashboard to view your traces by selecting one of the data sources as a source as shown below:
 
 ![Image](../../images/grafana-ui-4.png)
