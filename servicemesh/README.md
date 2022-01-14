@@ -20,7 +20,7 @@ NOTE: To run Istio with Docker Desktop, you will need to increase Docker's memor
 
 ## Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later
 
-`kubectl label namespace default istio-injection=enabled -n monitoring`
+`kubectl label namespace default istio-injection=enabled`
 
 
 ## Install istio with Default configuration profile on multi cluster.

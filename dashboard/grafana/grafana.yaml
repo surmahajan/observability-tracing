@@ -28,7 +28,7 @@ data:
                 "basicAuth" : true,
                 "basicAuthUser" : "elastic",
                 "orgId": 1,
-                "url": "https://10.97.99.151:9200",
+                "url": "https://10.102.52.245:9200",
                 "version": 1,
                 "jsonData" : {
                   "tlsSkipVerify" : true,
@@ -36,8 +36,16 @@ data:
                   "timeField" : "startTimeMillis"
                 },
                 "secureJsonData" : {
-                  "basicAuthPassword" : "os74ppMFm21Iek8V1k586lt1"
+                  "basicAuthPassword" : "7L3P43byI9Gyy3EBSz3J367f"
                 }
+            },
+            {
+                "name": "Jaeger",
+                "type": "jaeger",
+                "uid": "jaeger-spectra",
+                "url": "http://jaeger-prod-query.default:16686",
+                "editable": true,
+                "isDefault": false
             }
         ]
     }

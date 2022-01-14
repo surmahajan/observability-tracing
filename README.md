@@ -61,9 +61,9 @@ kubectl delete -f ./tracing/jaeger-role_binding.yaml
 kubectl delete -f ./tracing/jaeger-role.yaml
 kubectl delete -f ./tracing/jaeger-service_account.yaml
 kubectl delete -f ./tracing/jaeger-crd.yaml
-```
 kubectl delete secret jaeger-secret
 ```
+
 #### Elasticsearch Clean-up
 ```
 kubectl delete -f elasticsearch.yaml
