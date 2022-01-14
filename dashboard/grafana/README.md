@@ -4,7 +4,7 @@
 
 We need to modify the server host and password in 'grafana.yaml' before we can configure our elasticsearch deployment as a data source. To get both of these attributes:
 
-#### 1) Server host
+#### a. Server host
 
 ```
 CLUSTER_IP=$(kubectl get svc elasticsearch-es-http -o jsonpath='{.spec.clusterIP}')
@@ -12,7 +12,7 @@ CLUSTER_IP=$(kubectl get svc elasticsearch-es-http -o jsonpath='{.spec.clusterIP
 
 and then echo this variable in the terminal.
 
-#### 2) Password
+#### b. Password
     
 From the elasticsearch documentation you should have this stored already in the PASSWORD variable, but can be retrieved by:
 
@@ -20,9 +20,12 @@ From the elasticsearch documentation you should have this stored already in the 
 PASSWORD=$(kubectl get secret elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}')
 ```
 
-and then echo this variable in the terminal. 
+Retrieve PASSWORD value in the terminal
+```
+echo $PASSWORD
+```
 
-In grafana.yaml, replace CLUSTER_IP (line 20) and PASSWORD (line 28) with these two attributes.
+In grafana.yaml, replace CLUSTER_IP and PASSWORD with these two attributes.
 
 
 ### 2. Deploy Grafana
