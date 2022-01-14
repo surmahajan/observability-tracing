@@ -66,7 +66,7 @@ kubectl delete secret jaeger-secret
 
 #### Elasticsearch Clean-up
 ```
-kubectl delete -f elasticsearch.yaml
+kubectl delete -f ./storage/elasticsearch.yaml
 kubectl delete -f https://download.elastic.co/downloads/eck/1.8.0/operator.yaml
 kubectl delete -f https://download.elastic.co/downloads/eck/1.8.0/crds.yaml
 ```
