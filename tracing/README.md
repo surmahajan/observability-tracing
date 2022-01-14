@@ -23,10 +23,8 @@ kubectl apply -f ./tracing/jaeger-setup
 
 ### Troubleshooting
 
-1. Failed Jaeger deployment with the message 'elasticsearch node unavaiable'
-   1. This can be simply solved by waiting for a longer period of time for Jaeger to finish deploying.
+1. Failed Jaeger deployment with the message 'elasticsearch node unavaiable'. This is an intermittent issue while trying to deploy it on your local machine. It can take couple of minutes and restarts for Jaeger to finish deployment. 
 
 ### TODO: Configuring remote access to Jaeger
-
 
 kubectl config --kubeconfig=config-demo set-context dev-frontend --cluster=development --namespace=frontend --user=developer
