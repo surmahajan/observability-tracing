@@ -10,15 +10,11 @@ Observability comprises of three pillars
 
 For the current project we will focus on tracing.
 
-
 ![Image](images/observability-tracing.png)
-
 
 Private Cluster - Managing application and data workloads.
 
 ![Image](images/observability-architecture.png)
-
-
 
 ### What are the Prerequisites?
 
@@ -32,45 +28,21 @@ Private Cluster - Managing application and data workloads.
 
 ### How do I set up?
 
-* Install Elasticsearch to store Jaeger traces - Refer [Documentation](./storage/README.md)
-* Deploy Jaeger - Refer [Documentation](./tracing/README.md)
-* Install Istio and enable sidecar - Refer [Documentation](./servicemesh/README.md)
-* Deploy Grafana in order to visualise the traces - Refer [Documentation](./dashboard/grafana/README.md)
-* Deploy Bookinfo application in order to test tracing - Refer [Documentation](./demo/README.md)
+`make deploy`
+
+* Elasticsearch to store Jaeger traces - Refer [Documentation](./storage/README.md)
+* Jaeger - Refer [Documentation](./tracing/README.md)
+* Istio - Refer [Documentation](./service-mesh/README.md)
+* Grafana to visualise the traces - Refer [Documentation](./dashboard/grafana/README.md)
+* Bookinfo application to test tracing - Refer [Documentation](./demo/README.md)
 
 ### Will it cost me anything?
-No - We have used Docker Desktop which includes a standalone Kubernetes server and client. If you are using any other cloud provider please refer the cloud provider's pricing documentation. As a good practice make sure you cleanup the resources at the end.
+If you are using Docker Desktop which includes a standalone Kubernetes server and client you can run it for free locally. 
+If you are using any other cloud provider please refer the cloud provider's pricing documentation. As a good practice make sure you cleanup the resources at the end.
 
 
 ### How do I clean up?
 
+`make clean`
 
-#### Bookinfo Clean-up
-```
-kubectl delete -f ./demo/bookinfo.yaml
-```
-#### Grafana Clean-up
-```
-kubectl delete -f ./dashboard/grafana.yaml
-```
-#### Jaeger Clean-up
-```
-kubectl delete -f ./tracing/jaeger.yaml
-kubectl delete -f ./tracing/jaeger-operator.yaml
-kubectl delete -f ./tracing/jaeger-role_binding.yaml
-kubectl delete -f ./tracing/jaeger-role.yaml
-kubectl delete -f ./tracing/jaeger-service_account.yaml
-kubectl delete -f ./tracing/jaeger-crd.yaml
-```
-kubectl delete secret jaeger-secret
-```
-#### Elasticsearch Clean-up
-```
-kubectl delete -f elasticsearch.yaml
-kubectl delete -f https://download.elastic.co/downloads/eck/1.8.0/operator.yaml
-kubectl delete -f https://download.elastic.co/downloads/eck/1.8.0/crds.yaml
-```
-#### Istio Clean-up
-```
-kubectl delete namespace istio-system
-```
+

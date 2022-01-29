@@ -3,6 +3,11 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+# Ignored temporary files
+istio*/
+infra/
+grafana-with-values*
+
 # Node artifact files
 node_modules/
 dist/

@@ -78,7 +78,7 @@ data:
     external_services:
       tracing:
         in_cluster_url: "http://jaeger-prod-query.default:16685/api/traces"
-        url: "http://localhost:50490"
+        url: "http://localhost:55410"
         use_grpc: true
     identity:
       cert_file: ""

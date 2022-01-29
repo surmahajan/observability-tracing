@@ -1,7 +1,3 @@
-## Set-up
+## Demo application
 
-Run the following command to deploy the bookinfo application:
-
-```
-kubectl apply -f ./bookinfo.yaml
-```
+This file defines the services, service accounts, and deployments for the BookInfo sample application.
