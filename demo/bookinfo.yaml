@@ -72,7 +72,7 @@ spec:
       serviceAccountName: bookinfo-details
       containers:
       - name: details
-        image: docker.io/istio/examples-bookinfo-details-v1:1.16.2
+        image: istio-practice/examples-bookinfo-details-v1:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -125,7 +125,7 @@ spec:
       serviceAccountName: bookinfo-ratings
       containers:
       - name: ratings
-        image: docker.io/istio/examples-bookinfo-ratings-v1:1.16.2
+        image: istio-practice/examples-bookinfo-ratings-v1:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -328,8 +328,12 @@ spec:
       serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
-        image: docker.io/istio/examples-bookinfo-productpage-v1:1.16.2
+        image: istio-practice/examples-bookinfo-productpage-v1:0.0.1
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 256m
         ports:
         - containerPort: 9080
         volumeMounts:
@@ -340,4 +344,24 @@ spec:
       volumes:
       - name: tmp
         emptyDir: {}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: productpage-v1
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: productpage-v1
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
 ---

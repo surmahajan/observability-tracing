@@ -12,8 +12,7 @@ kubectl delete -f ./dashboard/grafana/grafana-with-values.yaml
 
 # Kiali Clean-up
 kubectl delete -f ./dashboard/kiali/kiali.yaml
-kubectl delete -f https://raw.githubusercontent.com/istio/istio/release-1.12/samples/addons/prometheus.yaml
-
+kubectl delete -f ./dashboard/kiali/prometheus.yaml
 # Jaeger Clean-up
 kubectl delete -f ./tracing/jaeger.yaml
 kubectl delete -f ./tracing/jaeger-operator.yaml
@@ -25,8 +24,8 @@ kubectl delete secret jaeger-secret
 
 # Elasticsearch Clean-up
 kubectl delete -f ./storage/elasticsearch.yaml
-kubectl delete -f https://download.elastic.co/downloads/eck/1.8.0/operator.yaml
-kubectl delete -f https://download.elastic.co/downloads/eck/1.8.0/crds.yaml
+kubectl delete -f ./storage/elasticsearch_operator.yaml
+kubectl delete -f ./storage/elasticsearch_crds.yaml
 
 # Istio Clean-up
 kubectl delete namespace istio-system

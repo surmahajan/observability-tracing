@@ -8,8 +8,8 @@ echo -e "${GREEN}Start deploying resources...."
 
 # 1. Deploy Elasticsearch operators
 
-kubectl create -f https://download.elastic.co/downloads/eck/1.8.0/crds.yaml
-kubectl apply -f https://download.elastic.co/downloads/eck/1.8.0/operator.yaml
+kubectl create -f ./storage/elasticsearch_crds.yaml
+kubectl apply -f ./storage/elasticsearch_operator.yaml
 
 # 2. Deploy Elasticsearch cluster
 
@@ -78,7 +78,7 @@ kubectl apply -f ./demo/bookinfo.yaml
 
 # Kiali Deployment
 
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.12/samples/addons/prometheus.yaml
+kubectl apply -f ./dashboard/kiali/prometheus.yaml
 kubectl apply -f ./dashboard/kiali/kiali.yaml
 
 ############################################################################################

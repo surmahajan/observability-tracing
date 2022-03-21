@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-server
+  labels:
+    app: jaeger-server
+    service: jaeger-server
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: jaeger-server
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-jaeger-server
+  labels:
+    account: jaeger-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-server-v1
+  labels:
+    app: jaeger-server
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger-server
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: jaeger-server
+        version: v1
+    spec:
+      serviceAccountName: bookinfo-jaeger-server
+      containers:
+        - name: jaeger-server
+          image: jaeger-server:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 256m
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 1000
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-client
+  labels:
+    app: jaeger-client
+    service: jaeger-client
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: jaeger-client
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-jaeger-client
+  labels:
+    account: jaeger-client
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-client-v1
+  labels:
+    app: jaeger-client
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger-client
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: jaeger-client
+        version: v1
+    spec:
+      serviceAccountName: bookinfo-jaeger-client
+      containers:
+        - name: jaeger-client
+          image: jaeger-client:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 256m
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 1000
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
