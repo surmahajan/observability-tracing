@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
 
-# Istio deployment 
-echo -e "${GREEN}Starting Istio deployment..."
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.12.2 sh -
-
-cd istio-1.12.2
-export PATH=$PWD/bin:$PATH
-
-# Install istio with Default configuration profile on single cluster. 
-
-istioctl install --set profile=default --set meshConfig.enableTracing=true --set meshConfig.defaultConfig.tracing.zipkin.address=jaeger-prod-collector:9411 --set meshConfig.defaultConfig.tracing.sampling=50
-
-cd ..
-
 # Elasticsearch deployment
 
 GREEN="\033[1;32m"
@@ -29,12 +16,12 @@ kubectl apply -f ./storage/elasticsearch_operator.yaml
 kubectl apply -f ./storage/elasticsearch.yaml
 
 ES_HEALTH=$(kubectl get elasticsearch -o jsonpath='{.items[0].status.health}')
-while [ "$ES_HEALTH" != "green" ];
-do
-	sleep 30
-	ES_HEALTH=$(kubectl get elasticsearch -o jsonpath='{.items[0].status.health}')
-	echo -e "Awaiting green status....Current status: ${ES_HEALTH}"
-done
+
+
+	sleep 50
+#	ES_HEALTH=$(kubectl get elasticsearch -o jsonpath='{.items[0].status.health}')
+#	echo -e "Awaiting green status....Current status: ${ES_HEALTH}"
+
 
 # 3. Create jaeger secret with default username and password
 # To integrate Elasticsearch with Jaeger (when later deployed), we must create a jaeger secret through which jaeger will pass logs through to Elasticsearch:
@@ -61,10 +48,23 @@ kubectl apply -f ./tracing/jaeger.yaml
 ############################################################################################
 ############################################################################################
 
+# Istio deployment 
+echo -e "${GREEN}Starting Istio deployment..."
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.12.2 sh -
+
+cd istio-1.12.2
+export PATH=$PWD/bin:$PATH
+
+# Install istio with Default configuration profile on single cluster. 
+
+istioctl install --set profile=default --set meshConfig.enableTracing=true --set meshConfig.defaultConfig.tracing.zipkin.address=jaeger-prod-collector:9411 --set meshConfig.defaultConfig.tracing.sampling=50
+
 # Once Jaeger is installed, you will need to point Istio proxies to send traces to the deployment.
 # Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later
+
 kubectl label namespace default istio-injection=enabled
 
+cd ..
 
 ############################################################################################
 ############################################################################################

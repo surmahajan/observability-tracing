@@ -13,6 +13,7 @@ kubectl delete -f ./dashboard/grafana/grafana-with-values.yaml
 # Kiali Clean-up
 kubectl delete -f ./dashboard/kiali/kiali.yaml
 kubectl delete -f ./dashboard/kiali/prometheus.yaml
+
 # Jaeger Clean-up
 kubectl delete -f ./tracing/jaeger.yaml
 kubectl delete -f ./tracing/jaeger-operator.yaml

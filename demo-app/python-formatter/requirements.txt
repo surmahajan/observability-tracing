@@ -1,0 +1,5 @@
+Flask
+jaeger-client
+opentracing
+opentracing-instrumentation
+tornado==5.1.1

@@ -1,0 +1,212 @@
+##################################################################################################
+# formatter service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: formatter
+  labels:
+    app: formatter
+    service: formatter
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: formatter
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-formatter
+  labels:
+    account: formatter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: formatter-v1
+  labels:
+    app: formatter
+    version: v1
+    kube-monkey/enabled: enabled
+    kube-monkey/identifier: formatter-v1
+    kube-monkey/mtbf: '1'
+    kube-monkey/kill-mode: "fixed"
+    kube-monkey/kill-value: '1'
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: formatter
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: formatter
+        version: v1
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: formatter-v1
+        kube-monkey/mtbf: '1'
+        kube-monkey/kill-mode: "fixed"
+        kube-monkey/kill-value: '1'
+    spec:
+      serviceAccountName: bookinfo-formatter
+      containers:
+        - name: formatter
+          image: tracing-practice/jaeger-formatter-python-v1:0.0.1
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 256m
+          env:
+            - name: JAEGER_AGENT_HOST
+              value: 10.1.0.11
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
+---
+##################################################################################################
+# java service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: java
+  labels:
+    app: java
+    service: java
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: java
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-java
+  labels:
+    account: java
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-v1
+  labels:
+    app: java
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: java
+        version: v1
+    spec:
+      serviceAccountName: bookinfo-java
+      containers:
+        - name: java
+          image: tracing-practice/jaeger-demo-a-v1:0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: JAEGER_AGENT_HOST
+              value: 10.1.0.11
+---
+##################################################################################################
+# main services
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: main
+  labels:
+    app: main
+    service: main
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: main
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-main
+  labels:
+    account: main
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main-v1
+  labels:
+    app: main
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: main
+        version: v1
+    spec:
+      serviceAccountName: bookinfo-main
+      containers:
+        - name: main
+          image: tracing-practice/jaeger-main-python-v1:0.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: JAEGER_AGENT_HOST
+              value: 10.1.0.11
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 256m
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 1000
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: main-v1
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: main-v1
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+---
