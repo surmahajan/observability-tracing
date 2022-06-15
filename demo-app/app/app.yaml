@@ -29,11 +29,6 @@ metadata:
   labels:
     app: formatter
     version: v1
-    kube-monkey/enabled: enabled
-    kube-monkey/identifier: formatter-v1
-    kube-monkey/mtbf: '1'
-    kube-monkey/kill-mode: "fixed"
-    kube-monkey/kill-value: '1'
 spec:
   replicas: 2
   selector:
@@ -45,11 +40,6 @@ spec:
       labels:
         app: formatter
         version: v1
-        kube-monkey/enabled: enabled
-        kube-monkey/identifier: formatter-v1
-        kube-monkey/mtbf: '1'
-        kube-monkey/kill-mode: "fixed"
-        kube-monkey/kill-value: '1'
     spec:
       serviceAccountName: bookinfo-formatter
       containers:
@@ -62,7 +52,7 @@ spec:
               cpu: 256m
           env:
             - name: JAEGER_AGENT_HOST
-              value: 10.1.0.11
+              value: JAEGER_AGENT_IP
           ports:
             - containerPort: 9080
           securityContext:
@@ -122,7 +112,7 @@ spec:
             runAsUser: 1000
           env:
             - name: JAEGER_AGENT_HOST
-              value: 10.1.0.11
+              value: JAEGER_AGENT_IP
 ---
 ##################################################################################################
 # main services
@@ -174,7 +164,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: JAEGER_AGENT_HOST
-              value: 10.1.0.11
+              value: JAEGER_AGENT_IP
           resources:
             requests:
               memory: 256Mi

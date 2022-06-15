@@ -5,7 +5,7 @@ GREEN="\033[1;32m"
 echo -e "${GREEN}Start cleanup...."
 
 # Bookinfo Clean-up
-kubectl delete -f ./demo/bookinfo.yaml
+kubectl delete -f ./demo-app/app/app-with-values.yaml
 
 # Grafana Clean-up
 kubectl delete -f ./dashboard/grafana/grafana-with-values.yaml

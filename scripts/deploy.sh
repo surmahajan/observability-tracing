@@ -15,13 +15,15 @@ kubectl apply -f ./storage/elasticsearch_operator.yaml
 
 kubectl apply -f ./storage/elasticsearch.yaml
 
-ES_HEALTH=$(kubectl get elasticsearch -o jsonpath='{.items[0].status.health}')
+sleep 120
 
-
-	sleep 50
+#ES_HEALTH=$(kubectl get elasticsearch -o jsonpath='{.items[0].status.health}')
+#while [ "$ES_HEALTH" != "green" ];
+#do
+#	sleep 30
 #	ES_HEALTH=$(kubectl get elasticsearch -o jsonpath='{.items[0].status.health}')
 #	echo -e "Awaiting green status....Current status: ${ES_HEALTH}"
-
+#done
 
 # 3. Create jaeger secret with default username and password
 # To integrate Elasticsearch with Jaeger (when later deployed), we must create a jaeger secret through which jaeger will pass logs through to Elasticsearch:
@@ -48,6 +50,14 @@ kubectl apply -f ./tracing/jaeger.yaml
 ############################################################################################
 ############################################################################################
 
+sleep 30
+
+JAEGER_AGENT_IP=$(kubectl get pods -l="app.kubernetes.io/name=jaeger-prod-agent" -o=jsonpath="{range .items[*]}{.status.podIP}")
+echo $JAEGER_AGENT_IP
+
+cp ./demo-app/app/app.yaml ./demo-app/app/app-with-values.yaml
+sed -i -e "s/JAEGER_AGENT_IP/${JAEGER_AGENT_IP}/g" ./demo-app/app/app-with-values.yaml
+
 # Istio deployment 
 echo -e "${GREEN}Starting Istio deployment..."
 curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.12.2 sh -
@@ -55,7 +65,7 @@ curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.12.2 sh -
 cd istio-1.12.2
 export PATH=$PWD/bin:$PATH
 
-# Install istio with Default configuration profile on single cluster. 
+# Install istio with Default configuration profile on single cluster.
 
 istioctl install --set profile=default --set meshConfig.enableTracing=true --set meshConfig.defaultConfig.tracing.zipkin.address=jaeger-prod-collector:9411 --set meshConfig.defaultConfig.tracing.sampling=50
 
@@ -70,8 +80,7 @@ cd ..
 ############################################################################################
 
 # BookInfo application deployment
-
-kubectl apply -f ./demo/bookinfo.yaml
+source ./demo-app/build-services.sh 0.0.1 tracing-practice
 
 ############################################################################################
 ############################################################################################

@@ -48,12 +48,12 @@ def init_tracer(service):
 @app.route("/")
 def say_hello():
     with tracer.start_active_span('say-hello', finish_on_close=True) as scope:
-        headers = {}
-        #     "x-request-id": str(secrets.token_hex(16)),
-        #     "x-b3-traceid": str(scope.span).split(":")[0],
-        #     "x-b3-spanid": str(scope.span).split(":")[1],
-        #     "x-b3-parentspanid": str(scope.span).split(":")[2]
-        # }
+        headers = {
+            "x-request-id": str(secrets.token_hex(16)),
+            "x-b3-traceid": str(scope.span).split(":")[0],
+            "x-b3-spanid": str(scope.span).split(":")[1],
+            "x-b3-parentspanid": str(scope.span).split(":")[2]
+        }
         scope.span.set_tag('hello-to', "oliver")
         hello_str = format_string("oliver", headers)
         call_java_app = java_app(headers)
@@ -90,16 +90,16 @@ def http_get(host, port, path, param, value, headers):
     assert r.status_code == 200
     return r.text
 
-# tracer = init_tracer('hello-world')
+tracer = init_tracer('hello-world')
 
 
-tracer = Tracer(
-    one_span_per_rpc=True,
-    service_name='hello-world',
-    reporter=LoggingReporter(),
-    sampler=ConstSampler(decision=True),
-    extra_codecs={Format.HTTP_HEADERS: B3Codec()},
-)
+# tracer = Tracer(
+#     one_span_per_rpc=True,
+#     service_name='hello-world',
+#     reporter=LoggingReporter(),
+#     sampler=ConstSampler(decision=True),
+#     extra_codecs={Format.HTTP_HEADERS: B3Codec()},
+# )
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

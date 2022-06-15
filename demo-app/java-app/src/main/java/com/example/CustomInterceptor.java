@@ -26,7 +26,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Map<String, String> stringStringMap = new HashMap<String, String>();
+        Map<String, String> stringStringMap = new HashMap<>();
 
         List<String> headers = Collections.list(request.getHeaderNames());
         headers.forEach(header -> {
@@ -35,10 +35,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
         Tracer.SpanBuilder spanBuilder = JaegerDemoAApplication.tracer.buildSpan(request.getRequestURI())
                 .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
-//        if (request.getHeader("x-request-id") != null) {
-            SpanContext extract = JaegerDemoAApplication.tracer.extract(HTTP_HEADERS, new TextMapExtractAdapter(stringStringMap));
-            spanBuilder = spanBuilder.asChildOf(extract);
-//        }
+        SpanContext extract = JaegerDemoAApplication.tracer.extract(HTTP_HEADERS, new TextMapExtractAdapter(stringStringMap));
+        spanBuilder = spanBuilder.asChildOf(extract);
         spanBuilder.startActive(true);
         return true;
     }

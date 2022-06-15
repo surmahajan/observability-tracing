@@ -75,10 +75,7 @@ public class JaegerDemoAApplication {
 
     @GetMapping("hello")
     public Object hello() throws IOException, InterruptedException {
-        System.out.println(AGENT_HOST);
         HashMap<String, String> map = new HashMap<>();
-//        Request.Builder builder = new Request.Builder()
-//                .url("http://localhost:8081/b/hello");
 
         SpanContext context = tracer.activeSpan().context();
         tracer.inject(context, HTTP_HEADERS, new TextMapInjectAdapter(map));
@@ -101,72 +98,11 @@ public class JaegerDemoAApplication {
         return Collections.singletonMap("hello", "a");
     }
 
-    @GetMapping("async")
-    public Object async() throws InterruptedException {
-        Thread.sleep(1000);
-        AutoFinishScope.Continuation capture = ((AutoFinishScope) tracer.scopeManager().active()).capture();
-        new Thread(new TestRunner(capture)).start();
-        return "async";
-
-    }
-
     @GetMapping("rt")
     public Object restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> forEntity = restTemplate.getForEntity("https://www.baidu.com", String.class);
         return forEntity.getBody();
     }
-
-
-    @GetMapping("art")
-    public Object asyncRestTemplate() {
-        AsyncRestTemplate asyncRestTemplate = new AsyncRestTemplate();
-        ListenableFuture<ResponseEntity<String>> listenableFuture = asyncRestTemplate.getForEntity("https://www.baidu.com", String.class);
-        final AutoFinishScope.Continuation capture = ((AutoFinishScope) tracer.scopeManager().active()).capture();
-        listenableFuture.addCallback(new ListenableFutureCallback<ResponseEntity<String>>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                try (AutoFinishScope activate = capture.activate()) {
-
-                }
-                ex.printStackTrace();
-            }
-
-            @Override
-            public void onSuccess(ResponseEntity<String> result) {
-                try (AutoFinishScope activate = capture.activate()) {
-                    tracer.activeSpan().setTag("async", true);
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(result);
-            }
-        });
-        new Thread(new TestRunner(((AutoFinishScope) tracer.scopeManager().active()).capture())).start();
-
-        return "test";
-    }
-
-
-    private static class TestRunner implements Runnable {
-
-        private AutoFinishScope.Continuation capture;
-
-        public TestRunner(AutoFinishScope.Continuation capture) {
-            this.capture = capture;
-        }
-
-        @Override
-        public void run() {
-            try (AutoFinishScope activate = capture.activate()) {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
 
 }
